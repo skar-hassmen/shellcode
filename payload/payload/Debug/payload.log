@@ -1,2 +1,14 @@
 ﻿  main.c
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(280,55): warning C4133: функция: несовместимые типы - из "const LPWSTR" в "unsigned short *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(282,72): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(283,71): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(284,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(295,38): warning C4090: функция: разные квалификаторы "const"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(298,20): warning C4013: fopen: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(303,9): warning C4013: fputs: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(304,9): warning C4013: fputc: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(309,8): warning C4013: fclose: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(298,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(317,8): warning C4013: fwrite: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(316,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
   payload.vcxproj -> C:\Users\mbks\Documents\GitHub\mbks4\payload\Debug\payload.exe
