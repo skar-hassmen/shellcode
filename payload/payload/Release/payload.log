@@ -1,23 +1,28 @@
 ﻿cl : командная строка warning D9025: переопределение "/sdl" на "/GS-"
   main.c
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(317,50): warning C4133: функция: несовместимые типы - из "const LPWSTR" в "unsigned short *"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(320,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(323,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(326,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(339,38): warning C4090: функция: разные квалификаторы "const"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(344,20): warning C4013: fopen: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(350,9): warning C4013: fputs: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(351,9): warning C4013: fputc: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(356,8): warning C4013: fclose: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(344,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(364,8): warning C4013: fwrite: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(375,7): warning C4013: fread: нет определения; предполагается "extern" с возвратом типа "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(363,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(371,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
-C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(372,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(294,1): warning C4005: INVALID_HANDLE_VALUE: изменение макроопределения
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(19): message : см. предыдущее определение "INVALID_HANDLE_VALUE"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(357,50): warning C4133: функция: несовместимые типы - из "const LPWSTR" в "unsigned short *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(360,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(365,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(370,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(375,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(386,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(395,67): warning C4133: функция: несовместимые типы - из "LPSTR" в "char *"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(401,38): warning C4090: функция: разные квалификаторы "const"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(405,13): warning C4090: функция: разные квалификаторы "const"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(376,1): warning C4113: "HMODULE (__stdcall *)(DWORD,DWORD,LPSECURITY_ATTRIBUTES,DWORD,DWORD,HANDLE)" отличается в списках параметров от "HMODULE (__stdcall *)(LPSTR,DWORD,DWORD,LPSECURITY_ATTRIBUTES,DWORD,DWORD,HANDLE)"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(387,1): warning C4113: "HMODULE (__stdcall *)(const void *,DWORD,LPDWORD,LPOVERLAPPED)" отличается в списках параметров от "HMODULE (__stdcall *)(HANDLE,const void *,DWORD,LPDWORD,LPOVERLAPPED)"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(444,19): warning C4013: fopen: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(445,8): warning C4013: fwrite: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(446,8): warning C4013: fclose: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(457,7): warning C4013: fread: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(444,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(452,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
+C:\Users\mbks\Documents\GitHub\mbks4\payload\payload\main.c(453,1): warning C4047: инициализация: "FILE *" отличается по уровням косвенного обращения от "int"
   Создание кода
-  1 of 6 functions (16.7%) were compiled, the rest were copied from previous compilation.
+  2 of 7 functions (28.6%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
   payload.vcxproj -> C:\Users\mbks\Documents\GitHub\mbks4\payload\Release\payload.exe
